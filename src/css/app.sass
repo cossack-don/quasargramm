@@ -1,19 +1,24 @@
 // app global css in Sass form
+
+// для заголовка подключили шрифты
 .text-grand-hotel
   font-family: 'Grand Hotel', 'Roboto', 'Helvetica Neue', Helvetica Arial, sans-serif
 
+  // адаптивный класс для маленьких экранов
 .small-screen-only
   @media (max-width: $breakpoint-xs-max)
     display: block
   @media (min-width: $breakpoint-sm-min)
     display: none
 
+// адаптивный класс для больших экранов
 .large-screen-only
   @media (max-width: $breakpoint-xs-max)
     display: none
   @media (min-width: $breakpoint-sm-min)
     display: block
 
+  // ширина контента по центру (например разрешение 1920 , контент 1200 margin 0 auto)
 .constrain
   max-width: 975px
   margin: 0 auto
