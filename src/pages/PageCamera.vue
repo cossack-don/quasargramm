@@ -28,10 +28,10 @@
     </div>
 
     <div class="row justify-center q-ma-md">
-        <q-input dense v-model="post.location" label="Location" class="col col-sm-6">
+        <q-input dense v-model="post.location" :loading="locationLoading" label="Location" class="col col-sm-6">
 
         <template v-slot:append>
-          <q-btn round dense flat icon="eva-navigation-2-outline" />
+          <q-btn v-if="!locationLoading && locationSupported" @click="getLocation" round dense flat icon="eva-navigation-2-outline" />
         </template>
 
         </q-input>
@@ -68,8 +68,20 @@ export default {
       imageCaptured: false,
       imageUpload: [],
       hasCameraSupport: true,
+      locationLoading: false,
     }
   },
+
+  computed: {
+    locationSupported() {
+      // если геолокация в навигаторе есть, вернет тру если нет, фолс
+      if('geolocation' in navigator) return true 
+      return false
+
+    }
+  },
+
+
       // ------------------------------------------------------------BLOCK------------------------------------------------------
   methods: {
     // метод  initCamera за показ видео( камеры для фото) и <video class="full-width" autoplay ref="video" />
@@ -160,13 +172,67 @@ export default {
       var blob = new Blob([ab], {type: mimeString});
       return blob;
 
-    }
+    },
+
+      // ------------------------------------------------------------BLOCK------------------------------------------------------
+  //  метод по получению геолокации при нажатии на кнопку геолакации
+    getLocation() {
+      this.locationLoading = true
+
+      navigator.geolocation.getCurrentPosition(position => {
+        // console.log('position', position)
+        this.getCityAndCountry(position)
+      }, err => {
+        // console.log('err: ', err)
+        this.locationError()
+      }, { timeout: 7000 })
+
+    },
+
+// получение геолокации(координат) через запрос и шаблон
+      getCityAndCountry(position) {
+
+        let apiUrl = `https://geocode.xyz/${ position.coords.latitude },${ position.coords.longitude }?json=1`
+
+        this.$axios.get(apiUrl).then(result => {
+          // console.log('result ', result)
+          this.locationSuccess(result)
+        }).catch(err => {
+          // console.log('err ', err)
+          this.locationError()
+        })
+      },
+
+// получение геолокации координат и записываем в поле-инпут
+      locationSuccess(result) {
+        this.post.location = result.data.city
+
+        if (result.data.country) {
+          this.post.location += `, ${ result.data.country }`
+        }
+
+        this.locationLoading = false
+      },
+
+// вываливается ошибка если отключена геолокация или не находит
+      locationError() {
+
+      this.$q.dialog({
+        title: 'Error',
+        message: 'Could not find your location.'
+      })
+
+      this.locationLoading = false
+
+      }
+
         // ------------------------------------------------------------BLOCK------------------------------------------------------
   },
 
       // ------------------------------------------------------------BLOCK------------------------------------------------------
   mounted() {
     this.initCamera()
+
   },
   beforeDestroy() {
 // если уходим на другую страницу, отключаем камеру
