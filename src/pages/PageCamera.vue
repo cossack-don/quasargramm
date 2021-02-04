@@ -1,4 +1,28 @@
 <template>
+<!-- FIRE BASE КУПИЛ ПЛАТНЫЙ АКК + ГУГЛ АКК СМ ПОТОМ ОТКЛЮЧИТЬ -->
+<!-- https://firebase.google.com/pricing?authuser=0 -->
+<!-- подключил с 04-02-21 -->
+<!-- отключить потом тариф в файр бейс и удалить карту у гугл акка -->
+
+
+
+<!-- FIRE BASE LESSONS AND LINKS -->
+<!-- https://console.firebase.google.com/u/0/project/quasargramm-673b9/firestore/data~2Fposts~2Fid2 -->
+<!-- https://firebase.google.com/docs/firestore/security/get-started?authuser=0 -->
+
+
+<!--END  FIRE BASE LESSONS AND LINKS -->
+
+<!--  BACK END LINKS -->
+<!-- https://expressjs.com/ru/starter/hello-world.html -->
+<!-- https://nodemon.io/ -->
+<!-- https://dashboard.heroku.com/apps -->
+
+<!-- DEPLOY -->
+<!-- https://dashboard.heroku.com/apps/quasargramm-backende/deploy/heroku-git -->
+<!-- END BACK END LINKS -->
+
+
   <q-page class="constrain-more q-pa-md">
 <!-- IMG -->
     <div class="camera-frame q-pa-md">
